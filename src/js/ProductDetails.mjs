@@ -8,6 +8,7 @@
 
 */
 
+
 // Model the ProductDetails.mjs file similarly to the ProductData.mjs file by placing the public methods in a class.
 export default class ProductDetails {
     constructor(productId, dataSource) {
@@ -52,13 +53,55 @@ export default class ProductDetails {
     };
     // This method generates the HTML to display our product.
     renderProductDetails() {
-        // Section to hold the information
-        document.createElement('section');
+        // container for product card
+        let productCard = document.createElement("section");
+        // add class to section container
+        productCard.classList.add(".product-detail");
+        
+        // h3 to hold product brand
+        let productBrand = document.createElement("h3");
+        // add value to h3
+        productBrand.textContent = "";
+
         // h2 to hold the name of the product
-        document.createElement('h2');
-        // <p> element to hold information about the product
-        // We will probably add more of these when we determine what product information will be shown here.
-        document.createElement('p');
+        let productName = document.createElement('h2');
+        // add class to h2
+        productName.classList.add("divider");
+        // add value to h2
+        productName.textContent = "";
+
+        // img element
+        let productImg = document.createElement("img");
+        productImg.classList.add("divider");
+        // set attributes for img element
+        productImg.setAttribute("src", "");
+        productImg.setAttribute("alt", "");
+        
+        // p element for price
+        let productPrice = document.createElement("p");
+        productPrice.classList.add("product-card__price");
+        // set value for productPrice
+        productPrice.textContent = "";
+
+        // p element for product colour
+        let productColour = document.createElement("p");
+        productColour.classList.add("product__color");
+        // set value for productColour
+        productColour.textContent = "";
+
+        // p element for product description
+        let productDescription = document.createElement("p");
+        productDescription.classList.add("product__description");
+        // Add value to productDescription
+        productDescription.textContent = "";
+
+        // append new elements to container (productCard)
+        productCard.append(brandName);
+        productCard.append(productName);
+        productCard.append(productImg);
+        productCard.append(productPrice);
+        productCard.append(productColour);
+        productCard.append(productDescription);
     }
       
 }
