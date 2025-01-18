@@ -8,6 +8,24 @@
 
 */
 
+// create a function that holds the html that we can use for our ProductDetails method called renderProductDetails()
+function productDetailsTemplate(product) {
+    return `<section class="product-detail"> <h3>${product.Brand.Name}</h3>
+    <h2 class="divider">${product.NameWithoutBrand}</h2>
+    <img
+      class="divider"
+      src="${product.Image}"
+      alt="${product.NameWithoutBrand}"
+    />
+    <p class="product-card__price">$${product.FinalPrice}</p>
+    <p class="product__color">${product.Colors[0].ColorName}</p>
+    <p class="product__description">
+    ${product.DescriptionHtmlSimple}
+    </p>
+    <div class="product-detail__add">
+      <button id="addToCart" data-id="${product.Id}">Add to Cart</button>
+    </div></section>`;
+}
 
 // Model the ProductDetails.mjs file similarly to the ProductData.mjs file by placing the public methods in a class.
 export default class ProductDetails {
@@ -57,68 +75,8 @@ export default class ProductDetails {
         setLocalStorage("so-cart", JSON.stringify(cart));
     };
     // This method generates the HTML to display our product.
-    renderProductDetails() {
-        // container for product card
-        let productCard = document.createElement("section");
-        // add class to section container
-        productCard.classList.add(".product-detail");
-        
-        // h3 to hold product brand
-        let productBrand = document.createElement("h3");
-        // add value to h3
-        productBrand.textContent = "";
-
-        // h2 to hold the name of the product
-        let productName = document.createElement('h2');
-        // add class to h2
-        productName.classList.add("divider");
-        // add value to h2
-        productName.textContent = "";
-
-        // img element
-        let productImg = document.createElement("img");
-        productImg.classList.add("divider");
-        // set attributes for img element
-        productImg.setAttribute("src", "");
-        productImg.setAttribute("alt", "");
-        
-        // p element for price
-        let productPrice = document.createElement("p");
-        productPrice.classList.add("product-card__price");
-        // set value for productPrice
-        productPrice.textContent = "";
-
-        // p element for product colour
-        let productColour = document.createElement("p");
-        productColour.classList.add("product__color");
-        // set value for productColour
-        productColour.textContent = "";
-
-        // p element for product description
-        let productDescription = document.createElement("p");
-        productDescription.classList.add("product__description");
-        // Add value to productDescription
-        productDescription.textContent = "";
-
-        // append new elements to container (productCard)
-        productCard.append(brandName);
-        productCard.append(productName);
-        productCard.append(productImg);
-        productCard.append(productPrice);
-        productCard.append(productColour);
-        productCard.append(productDescription);
-
-        // add the button
-        let buttonDiv = document.createElement("div");
-        buttonDiv.classList.add("product-detail__add");
-
-        let addToCartButton = document.createElement("button");
-        addToCartButton.setAttribute("id", "addToCart");
-        // set data-id to productId
-        addToCartButton.setAttribute("data-id", "${productId}");
-
-        buttonDiv.append(addToCartButton);
-        productCard.append(buttonDiv);
-    }
-      
+    renderProductDetails(selector) {
+        const element = document.querySelector(selector);
+        element.insertAdjacentHTML("afterBegin", productDetailsTemplate(this.product));
+    }    
 }
