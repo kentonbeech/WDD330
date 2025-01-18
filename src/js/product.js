@@ -1,6 +1,9 @@
 import ProductData from "./ProductData.mjs";
 import { setLocalStorage } from "./utils.mjs";
 
+import { getParams } from "./utils.mjs";
+
+// Create an instance of the ProductData class.
 const dataSource = new ProductData("tents");
 
 function addProductToCart(product) {
@@ -31,6 +34,17 @@ function addProductToCart(product) {
   // now update localStorage with the new array (most recent product added)
   setLocalStorage("so-cart", JSON.stringify(cart));
 }
+
+/**
+ * Week 02 Group Activity:
+ * Test your getParams function in product.js to see if you can get the product id successfully when someone navigates to the product-details page.  
+ */
+
+const productId = getParams('product');
+console.log(productId);
+// This would be a good time to test our findProductById method as well
+console.log(dataSource.findProductById(productId));
+
 // add to cart button event handler
 async function addToCartHandler(e) {
   const product = await dataSource.findProductById(e.target.dataset.id);
