@@ -19,9 +19,14 @@ export default class ProductDetails {
         // add this.path = ``;
     };
     // There are a few things that need to happen before our class can be used. Some will happen in the constructor and will happen automatically. Others it is nice to have more control over and so we will place them into an init method:
-    init() {
-        // syntax
-    };
+    async init() {
+        // use our datasource to get the details for the current product. findProductById will return a promise! use await or .then() to process it
+        // once we have the product details we can render out the HTML
+        // once the HTML is rendered we can add a listener to Add to Cart button
+        // Notice the .bind(this). Our callback will not work if we don't include that line. Review the readings from this week on 'this' to understand why.
+        document.getElementById('addToCart')
+          .addEventListener('click', this.addToCart.bind(this));
+        }
     // Method to add product to cart.
     addProductToCart(product) {
         // Store the product the user has selected for purchase, to Local Storage. This saves it at the origin of the site's local storage.
@@ -102,6 +107,18 @@ export default class ProductDetails {
         productCard.append(productPrice);
         productCard.append(productColour);
         productCard.append(productDescription);
+
+        // add the button
+        let buttonDiv = document.createElement("div");
+        buttonDiv.classList.add("product-detail__add");
+
+        let addToCartButton = document.createElement("button");
+        addToCartButton.setAttribute("id", "addToCart");
+        // set data-id to productId
+        addToCartButton.setAttribute("data-id", "${productId}");
+
+        buttonDiv.append(addToCartButton);
+        productCard.append(buttonDiv);
     }
       
 }
