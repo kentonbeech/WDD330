@@ -7,9 +7,22 @@
 5. Notice we import in the code we need from our modules. Then we get the id of our product using our helper function getParams. We create an instance of our ProductData data class with the URL it should use to look for products. Then we use both of those to create an instance of our ProductDetails class so that it has everything it needs to work. Finally we call our init() method using our class instance to finish setting everything up.
 
 */
+// fetch the product data from the json file
+async function fetchProductData() {
+  try {
+    const response = await fetch('public/json/tents.json');
+    if (!response.ok) {
+      throw new Error('Failed to fetch data: ${response.statusText}');
+    }
+    const data = await response.json();
+    return data;
+  } catch (error) {
+      console.error("Error fetching product data: ", error);
+  }
+}
 
 // create a function that holds the html that we can use for our ProductDetails method called renderProductDetails()
-function productDetailsTemplate(product) {
+export function productDetailsTemplate(product) {
     return `<section class="product-detail"> <h3>${product.Brand.Name}</h3>
     <h2 class="divider">${product.NameWithoutBrand}</h2>
     <img
@@ -76,7 +89,8 @@ export default class ProductDetails {
     };
     // This method generates the HTML to display our product.
     renderProductDetails(selector) {
-        const element = document.querySelector(selector);
+      const productData = fetchProductData();  
+      const element = document.querySelector(selector);
         element.insertAdjacentHTML("afterBegin", productDetailsTemplate(this.product));
     }    
 }
