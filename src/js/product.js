@@ -18,13 +18,13 @@ const dataSource = new ProductData("tents");
 const theProduct = new ProductDetails(productId, dataSource);
 theProduct.init();
 
-// add to cart button event handler
+
 async function addToCartHandler(e) {
   const product = await dataSource.findProductById(e.target.dataset.id);
   product.addProductToCart(product);
 }
 
-// add listener to Add to Cart button
+// Add listener to Add to Cart button
 document
   .getElementById("addToCart")
   .addEventListener("click", addToCartHandler);
