@@ -1,5 +1,7 @@
 import ProductData from "./ProductData.mjs";
-import ProductListing from "./ProductListing.mjs";
+import ProductListing from "./ProductList.mjs";
 
 const dataSource = new ProductData();
-const productListing = new ProductListing();
+const productListing = new ProductListing(dataSource);
+
+console.log(productListing);
