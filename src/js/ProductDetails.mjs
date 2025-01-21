@@ -7,19 +7,6 @@
 5. Notice we import in the code we need from our modules. Then we get the id of our product using our helper function getParams. We create an instance of our ProductData data class with the URL it should use to look for products. Then we use both of those to create an instance of our ProductDetails class so that it has everything it needs to work. Finally we call our init() method using our class instance to finish setting everything up.
 
 */
-// fetch the product data from the json file
-async function fetchProductData() {
-  try {
-    const response = await fetch('public/json/tents.json');
-    if (!response.ok) {
-      throw new Error('Failed to fetch data: ${response.statusText}');
-    }
-    const data = await response.json();
-    return data;
-  } catch (error) {
-      console.error("Error fetching product data: ", error);
-  }
-}
 
 // create a function that holds the html that we can use for our ProductDetails method called renderProductDetails()
 export function productDetailsTemplate(product) {
@@ -47,12 +34,12 @@ export default class ProductDetails {
         // A place to store the details we need to show once we retrieve them
         this.product = {};
         this.dataSource = dataSource;
-        // add this.path = ``;
     };
-    // There are a few things that need to happen before our class can be used. Some will happen in the constructor and will happen automatically. Others it is nice to have more control over and so we will place them into an init method:
     async init() {
         // use our datasource to get the details for the current product. findProductById will return a promise! use await or .then() to process it
+        this.product = await this.dataSource.findProductById(this.productId);
         // once we have the product details we can render out the HTML
+        this.renderProductDetails("main");
         // once the HTML is rendered we can add a listener to Add to Cart button
         // Notice the .bind(this). Our callback will not work if we don't include that line. Review the readings from this week on 'this' to understand why.
         document.getElementById('addToCart')
@@ -88,8 +75,7 @@ export default class ProductDetails {
         setLocalStorage("so-cart", JSON.stringify(cart));
     };
     // This method generates the HTML to display our product.
-    renderProductDetails(selector) {
-      const productData = fetchProductData();  
+    renderProductDetails(selector) {  
       const element = document.querySelector(selector);
         element.insertAdjacentHTML("afterBegin", productDetailsTemplate(this.product));
     }    
