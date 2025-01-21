@@ -25,9 +25,10 @@ export default class ProductListing {
         console.log(list); // Debugging
     
         let dataList = [];
-        this.dataSource.foreach(product) {
+        this.dataSource.foreach(product => {
             dataList.push(product.id);
-        }
+        });
+        
         return dataList;
     };
     // This method will use the template to be called for each product in the list, and then eventually inserted into the DOM
