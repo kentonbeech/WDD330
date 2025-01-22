@@ -73,6 +73,7 @@ export default class ProductDetails {
         // Update localStorage with the new product added to cart.
         // now update localStorage with the new array (most recent product added)
         setLocalStorage("so-cart", JSON.stringify(cart));
+        alert("Product added to cart!");
     };
     // This method generates the HTML to display our product.
     renderProductDetails(selector) {  
