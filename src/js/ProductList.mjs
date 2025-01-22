@@ -13,7 +13,7 @@ export function productCardTemplate(product) {
 };
 
 export default class ProductListing {
-    constructor(category, dataSource, listElement) {
+    constructor(category, dataSource, listElement) {  
         this.category = category;
         this.dataSource = dataSource;
         this.listElement = listElement;
@@ -23,12 +23,12 @@ export default class ProductListing {
         const list = await this.dataSource.getData();
         // here we will have syntax for rendering the list
         console.log(list); // Debugging
-    
+
         let dataList = [];
         this.dataSource.foreach(product => {
             dataList.push(product.id);
         });
-        
+
         return dataList;
     };
     // This method will use the template to be called for each product in the list, and then eventually inserted into the DOM
