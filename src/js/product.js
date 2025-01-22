@@ -19,7 +19,7 @@ const product = new ProductDetails(productId, dataSource);
 product.init();
 
 // Get the current cart from local storage or initialize an empty array
-const cart = getLocalStorage("so-cart") || [];
+const cart = localStorage.getItem("so-cart") || [];
 
 // Check if the product is already in the cart
 const existingProduct = cart.find((item) => item.Id === product.Id);

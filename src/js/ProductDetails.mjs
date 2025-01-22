@@ -49,29 +49,21 @@ export default class ProductDetails {
     addProductToCart(product) {
         // Store the product the user has selected for purchase, to Local Storage. This saves it at the origin of the site's local storage.
       
-        // Create an empty array
-        let cart = [];
-      
-        // Use JSON.stringify to properly stringify the product(s)
-        // setLocalStorage("so-cart", JSON.stringify(product));
-        // Retrieve the current cart from localStorage.
-        let cartItems = localStorage.getItem("so-cart");
-        //console.log("items in cart", cartItems)
+        // Get the current cart from local storage or (||) initialize an empty array
+        const cart = localStorage.getItem("so-cart") || [];
+        //console.log("items in cart", cart) // debugging
       
         // Make sure the data actually exists and is not null!
-        if (cartItems != null && cartItems != undefined) {
+        if (cart != null && cartItems != undefined) {
           // If it's not null or undefined, parse the product(s) saved there
           cart = JSON.parse(cartItems);
+          // Add the new product to the cart.
+          cart.push(product);
         } else {
-          //console.log("Failed to load cart: so-cart is empty or doesn't exist.");
+          console.log("Failed to load cart: so-cart is empty or doesn't exist.");
         }
       
-        // Add the new product to the cart.
-        cart.push(product);
-        //console.log("Updated cart: ", cart);
-      
         // Update localStorage with the new product added to cart.
-        // now update localStorage with the new array (most recent product added)
         setLocalStorage("so-cart", JSON.stringify(cart));
         alert("Product added to cart!");
     };
