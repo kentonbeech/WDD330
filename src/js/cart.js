@@ -6,7 +6,8 @@ function renderCartContents() {
 
   // If the cart is empty, display a message
   if (cartItems.length === 0) {
-    document.querySelector(".product-list").innerHTML = "<p>Your cart is empty.</p>";
+    document.querySelector(".product-list").innerHTML =
+      "<p>Your cart is empty.</p>";
     return;
   }
 

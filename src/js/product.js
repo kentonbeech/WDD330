@@ -34,7 +34,7 @@ if (!existingProduct) {
   alert("Product added to cart!");
 } else {
   alert("This product is already in your cart.");
-};
+}
 
 async function addToCartHandler(e) {
   const theProduct = await dataSource.findProductById(e.target.dataset.id);
