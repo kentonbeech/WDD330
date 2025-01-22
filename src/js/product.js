@@ -17,11 +17,37 @@ const productId = getParams("product");
 const dataSource = new ProductData("tents");
 const product = new ProductDetails(productId, dataSource);
 product.init();
+addProductToCart(product) {
+  // Store the product the user has selected for purchase, to Local Storage. This saves it at the origin of the site's local storage.
+
+  // Get the current cart from local storage or (||) initialize an empty array
+  const cartString = localStorage.getItem("so-cart") || [];
+  //console.log("items in cart", cart) // debugging
+  // Turn cartString into an array
+  // const cart = JSON.parse(cartString || "[]");
+  // Make sure the data actually exists and is not null!
+  if (cartString != null && cartItems != undefined) {
+    // If it's not null or undefined, parse the product(s) saved there
+    cart = JSON.parse(cartItems);
+    // Add the new product to the cart.
+    cart.push(product);
+  } else {
+    console.log("Failed to load cart: so-cart is empty or doesn't exist.");
+  }
+
+  // Update localStorage with the new product added to cart.
+  setLocalStorage("so-cart", JSON.stringify(cart));
+  alert("Product added to cart!");
+};
+
 
 // Get the current cart from local storage or initialize an empty array
-const cart = localStorage.getItem("so-cart") || [];
-
+const cartString = localStorage.getItem("so-cart") || [];
+// Turn cartString into an array
+const cart = JSON.parse(cartString || "[]");
+console.log(cart);
 // Check if the product is already in the cart
+
 const existingProduct = cart.find((item) => item.Id === product.Id);
 
 if (!existingProduct) {

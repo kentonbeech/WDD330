@@ -50,11 +50,12 @@ export default class ProductDetails {
         // Store the product the user has selected for purchase, to Local Storage. This saves it at the origin of the site's local storage.
       
         // Get the current cart from local storage or (||) initialize an empty array
-        const cart = localStorage.getItem("so-cart") || [];
+        const cartString = localStorage.getItem("so-cart") || [];
         //console.log("items in cart", cart) // debugging
-      
+        // Turn cartString into an array
+        // const cart = JSON.parse(cartString || "[]");
         // Make sure the data actually exists and is not null!
-        if (cart != null && cartItems != undefined) {
+        if (cartString != null && cartItems != undefined) {
           // If it's not null or undefined, parse the product(s) saved there
           cart = JSON.parse(cartItems);
           // Add the new product to the cart.
