@@ -18,6 +18,24 @@ const dataSource = new ProductData("tents");
 const theProduct = new ProductDetails(productId, dataSource);
 theProduct.init();
 
+// Get the current cart from local storage or initialize an empty array
+const cart = getLocalStorage("so-cart") || [];
+
+// Check if the product is already in the cart
+const existingProduct = cart.find((item) => item.Id === product.Id);
+
+if (!existingProduct) {
+  // Add the new product to the cart
+  cart.push(product);
+
+  // Save the updated cart to local storage
+  setLocalStorage("so-cart", cart);
+
+  alert("Product added to cart!");
+} else {
+  alert("This product is already in your cart.");
+};
+
 
 async function addToCartHandler(e) {
   const product = await dataSource.findProductById(e.target.dataset.id);
