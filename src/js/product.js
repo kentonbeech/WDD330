@@ -15,8 +15,8 @@ const productId = getParams("product");
 // console.log(dataSource.findProductById(productId));
 // Create an instance of the ProductData class.
 const dataSource = new ProductData("tents");
-const theProduct = new ProductDetails(productId, dataSource);
-theProduct.init();
+const product = new ProductDetails(productId, dataSource);
+product.init();
 
 // Get the current cart from local storage or initialize an empty array
 const cart = getLocalStorage("so-cart") || [];
@@ -37,8 +37,8 @@ if (!existingProduct) {
 };
 
 async function addToCartHandler(e) {
-  const product = await dataSource.findProductById(e.target.dataset.id);
-  product.addProductToCart(product);
+  const theProduct = await dataSource.findProductById(e.target.dataset.id);
+  theProduct.addProductToCart(product);
 }
 
 // Add listener to Add to Cart button
