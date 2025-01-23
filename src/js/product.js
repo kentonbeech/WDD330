@@ -1,47 +1,47 @@
 import ProductData from "./ProductData.mjs";
 import ProductDetails from "./ProductDetails.mjs";
-import { setLocalStorage } from "./utils.mjs";
+import { setLocalStorage, getLocalStorage, getParam } from "./utils.mjs";
 
-import { getParams } from "./utils.mjs";
-
-/**
- * Week 02 Group Activity:
- * Test your getParams function in product.js to see if you can get the product id successfully when someone navigates to the product-details page.
- */
-
-const productId = getParams("product");
-// console.log(productId);
-// This would be a good time to test our findProductById method as well (see console.log statement below)
-// console.log(dataSource.findProductById(productId));
-// Create an instance of the ProductData class.
 const dataSource = new ProductData("tents");
+const productId = getParam("product");
+
 const product = new ProductDetails(productId, dataSource);
 product.init();
 
-// Get the current cart from local storage or initialize an empty array
-const cart = getLocalStorage("so-cart") || [];
+// Function to add a product to the cart
+function addProductToCart(_product) {
+  // Retrieve the existing cart from local storage or initialize an empty array
+  let currentCart = getLocalStorage("so-cart") || [];
 
-// Check if the product is already in the cart
-const existingProduct = cart.find((item) => item.Id === product.Id);
+  // Check if the product is already in the cart
+  const existingProduct = currentCart.find((item) => item.Id === _product.Id);
 
-if (!existingProduct) {
-  // Add the new product to the cart
-  cart.push(product);
+  if (!existingProduct) {
+    // Add the new product to the cart
+    currentCart.push(_product);
 
-  // Save the updated cart to local storage
-  setLocalStorage("so-cart", cart);
+    // Save the updated cart to local storage
+    setLocalStorage("so-cart", currentCart);
 
-  alert("Product added to cart!");
-} else {
-  alert("This product is already in your cart.");
-};
-
-async function addToCartHandler(e) {
-  const theProduct = await dataSource.findProductById(e.target.dataset.id);
-  theProduct.addProductToCart(product);
+    alert("Product added to cart!");
+  } else {
+    alert("This product is already in your cart.");
+  }
 }
 
-// Add listener to Add to Cart button
-document
-  .getElementById("addToCart")
-  .addEventListener("click", addToCartHandler);
+// Add to cart button event handler
+async function addToCartHandler(e) {
+  const productId = e.target.dataset.id;
+  const theProduct = await dataSource.findProductById(productId);
+  addProductToCart(theProduct);
+}
+
+// Add event listener to the Add to Cart button
+try {
+  const cartButton = document.getElementById("addToCart");
+  if (cartButton) {
+    cartButton.addEventListener("click", addToCartHandler);
+  }
+} catch (error) {
+  console.log("You are on the main page or Add to Cart button is not present.");
+}

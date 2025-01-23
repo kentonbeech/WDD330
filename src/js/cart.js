@@ -1,33 +1,56 @@
-import { getLocalStorage } from "./utils.mjs";
+import { getLocalStorage, setLocalStorage } from "./utils.mjs";
 
 function renderCartContents() {
-  // Get the cart items from local storage or default to an empty array
-  const cartItems = getLocalStorage("so-cart") || [];
+  let cartItems = getLocalStorage("so-cart") || [];
+  const htmlItems = cartItems.map((item) => cartItemTemplate(item));
+  let DisplayList = document.querySelector(".product-list")
+  DisplayList.innerHTML = htmlItems.join("");
 
-  // If the cart is empty, display a message
-  if (cartItems.length === 0) {
-    document.querySelector(".product-list").innerHTML = "<p>Your cart is empty.</p>";
-    return;
+  if (JSON.parse(localStorage.getItem("so-cart")).length == 0) {
+    DisplayList.innerHTML = `<li class="cart-card divider" ><h3>Looks like you have no items in your cart.</h3></li>`
   }
 
-  // Generate HTML for each cart item and render them
-  const htmlItems = cartItems.map((item) => cartItemTemplate(item));
-  document.querySelector(".product-list").innerHTML = htmlItems.join("");
 }
 
 function cartItemTemplate(item) {
-  return `<li class="cart-card divider">
+  const newItem = `<li class="cart-card divider">
     <a href="#" class="cart-card__image">
-      <img src="${item.Image}" alt="${item.Name}" />
+      <img
+        src="${item.Image}"
+        alt="${item.Name}"
+      />
     </a>
     <a href="#">
       <h2 class="card__name">${item.Name}</h2>
     </a>
     <p class="cart-card__color">${item.Colors[0].ColorName}</p>
     <p class="cart-card__quantity">qty: 1</p>
-    <p class="cart-card__price">$${item.FinalPrice}</p>
+    <div><p class="cart-card__price">$${item.FinalPrice}</p>
+    <button class="close" value="${item.Id}">&times;</button></div>
   </li>`;
+
+  return newItem;
 }
 
-// Render the cart contents on page load
 renderCartContents();
+// total cost logic
+let totalDislpay = document.getElementById("Total");
+let itemsList = JSON.parse(localStorage.getItem("so-cart")) || [];
+let total = 0
+
+itemsList.forEach(element => {
+  total += element.FinalPrice;
+});
+
+totalDislpay.textContent = `Total Cost: $${total}`
+
+// make the buttons close the corresponding item, but it can only remove the first instanc eof that item.
+let closers = document.querySelectorAll(".close")
+
+closers.forEach(element => element.addEventListener("click", () => {
+  let acting_list = JSON.parse(localStorage.getItem("so-cart"));
+  let index = acting_list.findIndex((item) => item.Id == element.value)
+  acting_list.splice(index, 1)
+  setLocalStorage("so-cart", acting_list)
+  location.reload();
+}))
