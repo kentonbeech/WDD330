@@ -1,3 +1,15 @@
+function productCardTemplate(product) {
+    return `<li class="product-card">
+      <a href="./product_pages/index.html?product=${product.Name}">
+        <img src="${product.Image}" alt="Image of ${product.Name}">
+        <h3 class="card__brand">${product.Brand.Name}</h3>
+        <h2 class="card__name">${product.NameWithoutBrand}</h2>
+        <p class="product-card__price">$${product.ListPrice}</p>
+      </a>
+    </li>`
+
+}
+
 export default class ProductListing {
     constructor(category, dataSource, listElement) {
         // We passed in this information to make our class as reusable as possible.
@@ -11,5 +23,11 @@ export default class ProductListing {
         // our dataSource will return a Promise...so we can use await to resolve it.
         const list = await this.dataSource.getData();
         // render the list - to be completed
+        this.renderList(list)
+    }
+
+    renderList(list) {
+        let theList = list.map((item) => productCardTemplate(item));
+        document.querySelector(".product-list").innerHTML = theList.join("");
     }
 }

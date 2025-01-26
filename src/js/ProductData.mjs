@@ -22,4 +22,10 @@ export default class ProductData {
     let result = products.find((item) => item.Id == id);
     return result;
   }
+  async findProductByName(name) {
+    const products = await this.getData();
+    let theName = await name;
+    let result = await products.find((item) => item.Name == theName);
+    return result;
+  }
 }

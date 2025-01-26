@@ -1,4 +1,9 @@
-import { getLocalStorage, setLocalStorage } from "./utils.mjs";
+import {
+  getLocalStorage,
+  setLocalStorage,
+  LoadHeaderFooter,
+} from "./utils.mjs";
+LoadHeaderFooter();
 
 function renderCartContents() {
   let cartItems = getLocalStorage("so-cart") || [];
@@ -30,33 +35,32 @@ function cartItemTemplate(item) {
 
 renderCartContents();
 
-const closers = document.querySelectorAll(".closer")
+const closers = document.querySelectorAll(".closer");
 
-closers.forEach(element => {
+closers.forEach((element) => {
   element.addEventListener("click", () => {
     let theList = JSON.parse(localStorage.getItem("so-cart")) || [];
-    let theItem = theList.findIndex((item) => item.Id == element.value)
-    theList.splice(theItem, 1)
-    setLocalStorage("so-cart", theList)
-    location.reload()
-  })
+    let theItem = theList.findIndex((item) => item.Id == element.value);
+    theList.splice(theItem, 1);
+    setLocalStorage("so-cart", theList);
+    location.reload();
+  });
 });
 
-let total = document.querySelector("#Total")
-let Clear = document.querySelector("#Clear")
-
+let total = document.querySelector("#Total");
+let Clear = document.querySelector("#Clear");
 
 function findTotal() {
-  let number = 0
+  let number = 0;
   let theList = JSON.parse(localStorage.getItem("so-cart")) || [];
-  theList.forEach(element => {
-    number += element.FinalPrice
+  theList.forEach((element) => {
+    number += element.FinalPrice;
   });
-  return number
+  return number;
 }
-total.textContent = `Total Cost: $${findTotal()}`
+total.textContent = `Total Cost: $${findTotal()}`;
 
 Clear.addEventListener("click", () => {
-  setLocalStorage("so-cart", [])
+  setLocalStorage("so-cart", []);
   location.reload();
-})
+});
