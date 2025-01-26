@@ -40,5 +40,5 @@ try {
   });
   // console.log(cartButton)
 } catch (error) {
-  console.log("you are on main page");
+  window.console.log("you are on an incorrect page")
 }

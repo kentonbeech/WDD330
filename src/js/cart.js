@@ -43,7 +43,7 @@ closers.forEach((element) => {
     let theItem = theList.findIndex((item) => item.Id == element.value);
     theList.splice(theItem, 1);
     setLocalStorage("so-cart", theList);
-    location.reload();
+    window.location.reload();
   });
 });
 
@@ -62,5 +62,5 @@ total.textContent = `Total Cost: $${findTotal()}`;
 
 Clear.addEventListener("click", () => {
   setLocalStorage("so-cart", []);
-  location.reload();
+  window.location.reload();
 });
