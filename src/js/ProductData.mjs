@@ -10,15 +10,22 @@ export default class ProductData {
   constructor(category) {
     this.category = category;
     this.path = `../json/${this.category}.json`;
-
   }
-  getData() {
-    return fetch(this.path)
+  async getData() {
+    let result = await fetch(this.path)
       .then(convertToJson)
       .then((data) => data);
+    if (this.category == "tents") {
+      result;
+    }
+    else {
+      result = await result.Result
+    }
+    window.console.log(result)
+    return result;
   }
   async findProductById(id) {
-    const products = await this.getData();
+    let products = await this.getData();
     let result = products.find((item) => item.Id == id);
     return result;
   }
@@ -26,6 +33,7 @@ export default class ProductData {
     const products = await this.getData();
     let theName = await name;
     let result = await products.find((item) => item.Name == theName);
+    window.console.log(products);
     return result;
   }
 }

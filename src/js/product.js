@@ -1,13 +1,13 @@
 import ProductData from "./ProductData.mjs";
 import ProductDetails from "./ProductDetails.mjs";
-import { setLocalStorage, getParam, LoadHeaderFooter } from "./utils.mjs";
+import { setLocalStorage, getParam, LoadHeaderFooter, getLocalStorage } from "./utils.mjs";
 
 LoadHeaderFooter();
 
-const dataSource = new ProductData("tents");
+
+const dataSource = new ProductData(getLocalStorage("category"));
 
 const productId = getParam("product");
-
 
 const product = new ProductDetails(productId, dataSource);
 
@@ -40,5 +40,5 @@ try {
   });
   // console.log(cartButton)
 } catch (error) {
-  window.console.log("you are on an incorrect page")
+  window.console.log("you are on an incorrect page");
 }
