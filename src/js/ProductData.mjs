@@ -21,7 +21,6 @@ export default class ProductData {
     else {
       result = await result.Result
     }
-    window.console.log(result)
     return result;
   }
   async findProductById(id) {
@@ -33,7 +32,6 @@ export default class ProductData {
     const products = await this.getData();
     let theName = await name;
     let result = await products.find((item) => item.Name == theName);
-    window.console.log(products);
     return result;
   }
 }

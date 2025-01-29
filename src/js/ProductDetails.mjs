@@ -1,8 +1,9 @@
-import { setLocalStorage } from "./utils.mjs";
+import { setLocalStorage, getLocalStorage } from "./utils.mjs";
 
 function productDetailsTemplate(product) {
   let output = "";
-  try {//in this case it is the category of tents
+  let determiner = getLocalStorage("category");
+  if (determiner == "tents") {//in this case it is the category of tents
     output = `<section class="product-detail"> <h3>${product.Brand.Name}</h3>
     <h2 class="divider">${product.NameWithoutBrand}</h2>
     <img
@@ -19,7 +20,7 @@ function productDetailsTemplate(product) {
       <button id="addToCart" data-id="${product.Id}">Add to Cart</button>
     </div></section>`;
 
-  } catch {//in thi scase it i snot the category of tents
+  } else {//in thi scase it i snot the category of tents
     output = `<section class="product-detail"> <h3>${product.Name}</h3>
     <h2 class="divider">${product.NameWithoutBrand}</h2>
     <img
@@ -62,16 +63,21 @@ export default class ProductDetails {
       document
         .getElementById("addToCart")
         .addEventListener("click", this.addToCart.bind(this));
-    } catch {
-      window.console.log("too slow")
+    } catch (error) {
+      window.console.log(error);
+
     }
   }
   addToCart() {
     // setLocalStorage("so-cart", this.product); // broken code!
     // Retrieve the existing cart from local storage
     let currentCart = JSON.parse(localStorage.getItem("so-cart")) || [];
-
+    try {
+      let itemIndex = currentCart.indexOf((this.product));
+      window.console.log(itemIndex)
+    } catch { window.console.log("") }
     // Add the new product to the cart
+    this.product.quantity = 1;
     currentCart.push(this.product);
 
     setLocalStorage("so-cart", currentCart);
