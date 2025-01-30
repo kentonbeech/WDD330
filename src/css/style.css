@@ -85,7 +85,7 @@ header {
   margin-top: -1.3em;
 }
 
-.logo--square > div {
+.logo--square>div {
   margin-top: -1.7em;
 }
 
@@ -116,6 +116,15 @@ button:active {
 }
 
 /* End utility classes */
+
+/* Directory icons */
+.listing-directory img {
+  height: 125px;
+}
+
+.listing-directory h3 {
+  justify-self: center;
+}
 
 /* Cart icon styles */
 .cart {
