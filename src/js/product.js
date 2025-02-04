@@ -1,47 +1,44 @@
 import ProductData from "./ProductData.mjs";
 import ProductDetails from "./ProductDetails.mjs";
-import { setLocalStorage, getLocalStorage, getParam } from "./utils.mjs";
+import { setLocalStorage, getParam, LoadHeaderFooter, getLocalStorage } from "./utils.mjs";
 
-const dataSource = new ProductData("tents");
+LoadHeaderFooter();
+
+
+const dataSource = new ProductData(getLocalStorage("category"));
+
 const productId = getParam("product");
 
 const product = new ProductDetails(productId, dataSource);
+
 product.init();
 
-// Function to add a product to the cart
 function addProductToCart(_product) {
-  // Retrieve the existing cart from local storage or initialize an empty array
-  let currentCart = getLocalStorage("so-cart") || [];
+  // Retrieve the existing cart from local storage
+  let currentCart = JSON.parse(localStorage.getItem("so-cart")) || [];
 
-  // Check if the product is already in the cart
-  const existingProduct = currentCart.find((item) => item.Id === _product.Id);
+  // Add the new product to the cart
+  currentCart.push(_product);
 
-  if (!existingProduct) {
-    // Add the new product to the cart
-    currentCart.push(_product);
-
-    // Save the updated cart to local storage
-    setLocalStorage("so-cart", currentCart);
-
-    alert("Product added to cart!");
-  } else {
-    alert("This product is already in your cart.");
-  }
+  setLocalStorage("so-cart", currentCart);
 }
 
-// Add to cart button event handler
+// add to cart button event handler
 async function addToCartHandler(e) {
-  const productId = e.target.dataset.id;
-  const theProduct = await dataSource.findProductById(productId);
-  addProductToCart(theProduct);
+  // const product = await dataSource.findProductById(e.target.dataset.id);
+  let __product = await dataSource.findProductById(e);
+  addProductToCart(__product);
 }
 
-// Add event listener to the Add to Cart button
 try {
-  const cartButton = document.getElementById("addToCart");
-  if (cartButton) {
-    cartButton.addEventListener("click", addToCartHandler);
-  }
+  // preventing an error from  showing when on main page
+  // add listener to Add to Cart button
+  let cartButton = document.getElementById("addToCart");
+  // cartButton.addEventListener("click", () => { addToCartHandler }); old broken code on this line
+  cartButton.addEventListener("click", () => {
+    addToCartHandler(cartButton.value);
+  });
+  // console.log(cartButton)
 } catch (error) {
-  console.log("You are on the main page or Add to Cart button is not present.");
+  window.console.log(error);
 }

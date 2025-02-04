@@ -1,19 +1,19 @@
-import { getLocalStorage, setLocalStorage } from "./utils.mjs";
+import {
+  getLocalStorage,
+  setLocalStorage,
+  LoadHeaderFooter,
+} from "./utils.mjs";
+LoadHeaderFooter();
 
 function renderCartContents() {
   let cartItems = getLocalStorage("so-cart") || [];
   const htmlItems = cartItems.map((item) => cartItemTemplate(item));
-  let DisplayList = document.querySelector(".product-list")
-  DisplayList.innerHTML = htmlItems.join("");
-
-  if (JSON.parse(localStorage.getItem("so-cart")).length == 0) {
-    DisplayList.innerHTML = `<li class="cart-card divider" ><h3>Looks like you have no items in your cart.</h3></li>`
-  }
-
+  document.querySelector(".product-list").innerHTML = htmlItems.join("");
 }
 
 function cartItemTemplate(item) {
-  const newItem = `<li class="cart-card divider">
+  let newItem = ""
+  newItem = `<li class="cart-card divider">
     <a href="#" class="cart-card__image">
       <img
         src="${item.Image}"
@@ -24,33 +24,80 @@ function cartItemTemplate(item) {
       <h2 class="card__name">${item.Name}</h2>
     </a>
     <p class="cart-card__color">${item.Colors[0].ColorName}</p>
-    <p class="cart-card__quantity">qty: 1</p>
-    <div><p class="cart-card__price">$${item.FinalPrice}</p>
-    <button class="close" value="${item.Id}">&times;</button></div>
+    <p class="cart-card__quantity">
+    <button class="decrease" value="${item.Id}">&larr;</button>
+    qty: ${item.quantity}
+    <button class="increase" value="${item.Id}">&rarr;</button></p>
+    <div>
+    <p class="cart-card__price">$${item.FinalPrice}</p>
+    <button class="closer" value="${item.Id}">&times;</button>
+    </div>
   </li>`;
 
   return newItem;
 }
 
 renderCartContents();
-// total cost logic
-let totalDislpay = document.getElementById("Total");
-let itemsList = JSON.parse(localStorage.getItem("so-cart")) || [];
-let total = 0
 
-itemsList.forEach(element => {
-  total += element.FinalPrice;
+// buttons for the cart items
+const closers = document.querySelectorAll(".closer");
+let total = document.querySelector("#Total");
+let Clear = document.querySelector("#Clear");
+let adder = document.querySelectorAll(".increase");
+let subtracter = document.querySelectorAll(".decrease");
+
+// removing cart items
+closers.forEach((element) => {
+  element.addEventListener("click", () => {
+    let theList = JSON.parse(localStorage.getItem("so-cart")) || [];
+    let theItem = theList.findIndex((item) => item.Id == element.value);
+    theList.splice(theItem, 1);
+    setLocalStorage("so-cart", theList);
+    window.location.reload();
+  });
 });
 
-totalDislpay.textContent = `Total Cost: $${total}`
+// reducing item quantity
+subtracter.forEach((element) => {
+  element.addEventListener("click", () => {
+    let theList = JSON.parse(localStorage.getItem("so-cart")) || [];
+    let theItem = theList.find((item) => item.Id == element.value);
+    if (theItem.quantity > 1) {
+      theItem.quantity -= 1
+      setLocalStorage("so-cart", theList);
+      window.location.reload();
+    }
 
-// make the buttons close the corresponding item, but it can only remove the first instanc eof that item.
-let closers = document.querySelectorAll(".close")
+  });
+});
 
-closers.forEach(element => element.addEventListener("click", () => {
-  let acting_list = JSON.parse(localStorage.getItem("so-cart"));
-  let index = acting_list.findIndex((item) => item.Id == element.value)
-  acting_list.splice(index, 1)
-  setLocalStorage("so-cart", acting_list)
-  location.reload();
-}))
+// increasing item quantity
+adder.forEach((element) => {
+  element.addEventListener("click", () => {
+    let theList = JSON.parse(localStorage.getItem("so-cart")) || [];
+    let theItem = theList.find((item) => item.Id == element.value);
+    theItem.quantity += 1
+    setLocalStorage("so-cart", theList);
+    window.location.reload();
+
+  });
+});
+
+
+// total for the item
+function findTotal() {
+  let number = 0;
+  let theList = JSON.parse(localStorage.getItem("so-cart")) || [];
+  theList.forEach((element) => {
+    number += element.ListPrice * element.quantity;
+  });
+  return number;
+}
+total.textContent = `Total Cost: $${findTotal()}`;
+
+// clearing the cart
+Clear.addEventListener("click", () => {
+  setLocalStorage("so-cart", []);
+  window.location.reload();
+});
+

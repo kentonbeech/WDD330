@@ -89,6 +89,22 @@ header {
   margin-top: -1.7em;
 }
 
+#superScript {
+  position: absolute;
+  display: flex;
+  width: 20px;
+  height: 20px;
+  background-color: orange;
+  border-radius: 50%;
+  justify-content: center;
+  text-align: center;
+  z-index: 10;
+  right: 0;
+  top: -50%;
+  transform: translate(50%, 50%);
+}
+
+
 /* utility classes */
 .highlight {
   color: var(--tertiary-color);
@@ -103,21 +119,28 @@ button {
   border: 0;
   font-size: var(--large-font);
   cursor: pointer;
-  transition: transform 1s;
+  transition: transform 0.2s;
 }
 
 button:active {
   transform: scale(0.95);
-  transition: transform 0.5s;
+  transition: transform 0.2s;
 }
-
 
 .divider {
   border-bottom: 2px solid var(--primary-color);
 }
 
-
 /* End utility classes */
+
+/* Directory icons */
+.listing-directory img {
+  height: 125px;
+}
+
+.listing-directory h3 {
+  justify-self: center;
+}
 
 /* Cart icon styles */
 .cart {
